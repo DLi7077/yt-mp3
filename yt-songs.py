@@ -1,4 +1,3 @@
-# importing packages
 import eyed3
 from eyed3.id3.frames import ImageFrame
 from moviepy.editor import *
@@ -10,6 +9,8 @@ from pathlib import Path
 
 def saveImgFromUrl(thumbnailPath, url):
     img_data = requests.get(url)._content
+    # Create folder if doesnt exist
+    os.makedirs(os.path.dirname(thumbnailPath), exist_ok=True)
     with open(thumbnailPath, 'wb') as handler:
         handler.write(img_data)
 
@@ -25,7 +26,7 @@ def setThumbnail(mp3File, imgUrl):
     title = Path(mp3File).stem
 
     # save image first
-    thumbnailPath = f'./THUMBNAIL-{title}.jpg' # will be deleted after use
+    thumbnailPath = f'./THUMBNAIL/{title}.jpg'  # will be deleted after use
     saveImgFromUrl(thumbnailPath, imgUrl)
 
     audiofile = eyed3.load(mp3File)
@@ -38,7 +39,7 @@ def setThumbnail(mp3File, imgUrl):
 
     audiofile.tag.save(version=eyed3.id3.ID3_V2_3)
 
-    os.remove(thumbnailPath)
+    # os.remove(thumbnailPath)
 
 
 def downloadYtMp3(url, destination="."):
@@ -63,8 +64,13 @@ def downloadYtMp3(url, destination="."):
 
 
 urls = [
-    'https://www.youtube.com/watch?v=zDHSrV5Q89k'
+    # 'https://www.youtube.com/watch?v=aLTQmyIGoXg',
+    # 'https://www.youtube.com/watch?v=J8YiccoHXmc',
+    # 'https://www.youtube.com/watch?v=LEjZ3lJPzN0'
+    # 'https://www.youtube.com/watch?v=ZQRMSEPFxQQ'
+    'https://www.youtube.com/watch?v=PclF9Ym9Rpo'
 ]
+
 location = "./songs"
 
 for url in urls:
